@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Phone, ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 import heroImage from "@/assets/hero-home.jpg";
 
 interface HeroProps {
@@ -28,16 +29,35 @@ const Hero = ({
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-        <div className="animate-fade-in-up">
-          <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <motion.h1 
+            className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
             {title}
-          </h1>
-          <p className="text-lg sm:text-xl md:text-2xl text-muted max-w-3xl mx-auto mb-10 leading-relaxed">
+          </motion.h1>
+          <motion.p 
+            className="text-lg sm:text-xl md:text-2xl text-muted max-w-3xl mx-auto mb-10 leading-relaxed"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
             {subtitle}
-          </p>
+          </motion.p>
           
           {showCTA && (
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <motion.div 
+              className="flex flex-col sm:flex-row items-center justify-center gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+            >
               <Button size="lg" className="magnetic text-base px-8 py-6">
                 Get a Free Quote
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -53,12 +73,17 @@ const Hero = ({
                   Call (310) 498-0110
                 </a>
               </Button>
-            </div>
+            </motion.div>
           )}
-        </div>
+        </motion.div>
 
         {/* Trust Bar */}
-        <div className="mt-16 glass rounded-2xl p-6 max-w-4xl mx-auto animate-fade-in" style={{ animationDelay: "200ms" }}>
+        <motion.div 
+          className="mt-16 glass rounded-2xl p-6 max-w-4xl mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+        >
           <p className="text-sm text-muted mb-4">Serving LA, OC, SD & Las Vegas</p>
           <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-muted">
             <span>Somfy®</span>
@@ -73,7 +98,7 @@ const Hero = ({
             <span className="text-border">•</span>
             <span>Gaposa®</span>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Decorative elements */}

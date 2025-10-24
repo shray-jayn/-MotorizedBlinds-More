@@ -1,7 +1,10 @@
+import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import ProductCard from "@/components/ProductCard";
 import Footer from "@/components/Footer";
+import ScrollReveal from "@/components/ScrollReveal";
+import QuoteWizard from "@/components/QuoteWizard";
 import { products } from "@/content/products";
 import { productFAQs } from "@/content/faqs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -11,6 +14,8 @@ import productRollerImg from "@/assets/product-roller.jpg";
 import productExteriorImg from "@/assets/product-exterior.jpg";
 
 const Products = () => {
+  const [quoteOpen, setQuoteOpen] = useState(false);
+
   return (
     <div className="min-h-screen">
       <Navbar />
