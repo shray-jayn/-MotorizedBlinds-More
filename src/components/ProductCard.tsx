@@ -78,9 +78,12 @@ const ProductCard = ({ product, imageSrc }: ProductCardProps) => {
         <Button
           variant="ghost"
           className="w-full group/btn hover:bg-brand/10 hover:text-brand transition-all"
+          asChild
         >
-          Learn More
-          <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+          <a href="/products">
+            Learn More
+            <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+          </a>
         </Button>
       </div>
 

@@ -14,7 +14,11 @@ import { Button } from "@/components/ui/button";
 import { Shield, Zap, Home, CheckCircle, Phone, Clock, Award, Smartphone, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import productRollerImg from "@/assets/product-roller.jpg";
+import productZebraImg from "@/assets/product-zebra.jpg";
+import productHoneycombImg from "@/assets/product-honeycomb.jpg";
+import productRomanImg from "@/assets/product-roman.jpg";
 import productExteriorImg from "@/assets/product-exterior.jpg";
+import productAwningImg from "@/assets/product-awning.jpg";
 
 const Index = () => {
   const [quoteOpen, setQuoteOpen] = useState(false);
@@ -65,18 +69,25 @@ const Index = () => {
             </div>
           </ScrollReveal>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.slice(0, 6).map((product, index) => (
-              <ScrollReveal key={index} delay={index * 0.1}>
-                <ProductCard 
-                  product={product}
-                  imageSrc={
-                    index === 0 ? productRollerImg :
-                    index === 4 ? productExteriorImg :
-                    undefined
-                  }
-                />
-              </ScrollReveal>
-            ))}
+            {products.slice(0, 6).map((product, index) => {
+              const productImages = [
+                productRollerImg,
+                productZebraImg,
+                productHoneycombImg,
+                productRomanImg,
+                productExteriorImg,
+                productAwningImg
+              ];
+              
+              return (
+                <ScrollReveal key={index} delay={index * 0.1}>
+                  <ProductCard 
+                    product={product}
+                    imageSrc={productImages[index]}
+                  />
+                </ScrollReveal>
+              );
+            })}
           </div>
           <ScrollReveal delay={0.6}>
             <div className="text-center mt-12">
