@@ -16,7 +16,7 @@ const QuickQuoteForm = () => {
     if (submitting) return;
     setSubmitting(true);
     const apiBase = import.meta.env.VITE_API_URL ?? "";
-    const url = `${apiBase}/api/send-quick-quote`;
+    const url = `${apiBase}/send-quick-quote`;
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 30000);
     try {

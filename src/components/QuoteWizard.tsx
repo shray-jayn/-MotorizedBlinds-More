@@ -46,7 +46,7 @@ const QuoteWizard = ({ open, onOpenChange }: QuoteWizardProps) => {
     setSubmitting(true);
     setSubmitError(null);
     const apiBase = import.meta.env.VITE_API_URL ?? "";
-    const url = `${apiBase}/api/send-quote`;
+    const url = `${apiBase}/send-quote`;
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 30000);
     try {
