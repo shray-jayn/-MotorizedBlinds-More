@@ -37,6 +37,7 @@ const QuickQuoteForm = () => {
         }
         throw new Error(msg);
       }
+      console.log("[QuickQuoteForm] Submit success", { name, phone });
       toast({
         title: "Request Received!",
         description: "We'll call you shortly to discuss your project.",
@@ -45,6 +46,7 @@ const QuickQuoteForm = () => {
       setPhone("");
     } catch (err: unknown) {
       clearTimeout(timer);
+      console.log("[QuickQuoteForm] Submit failed", err);
       const message =
         err instanceof Error &&
         (err.name === "AbortError" || err.message?.includes("timed out"))

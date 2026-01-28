@@ -67,6 +67,7 @@ const QuoteWizard = ({ open, onOpenChange }: QuoteWizardProps) => {
         }
         throw new Error(msg);
       }
+      console.log("[QuoteWizard] Submit success", formData);
       toast({
         title: "Quote Request Submitted!",
         description:
@@ -85,6 +86,7 @@ const QuoteWizard = ({ open, onOpenChange }: QuoteWizardProps) => {
       });
     } catch (err: unknown) {
       clearTimeout(timer);
+      console.log("[QuoteWizard] Submit failed", err);
       const message =
         err instanceof Error && (err.name === "AbortError" || err.message?.includes("timed out"))
           ? "Request timed out. Make sure the backend is running (port 3002) and try again."
