@@ -1,6 +1,6 @@
 // src/components/QuoteWizard.tsx
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,6 +23,8 @@ interface QuoteWizardProps {
 
 const QuoteWizard = ({ open, onOpenChange }: QuoteWizardProps) => {
   const [step, setStep] = useState(1);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -34,24 +36,70 @@ const QuoteWizard = ({ open, onOpenChange }: QuoteWizardProps) => {
   });
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (open) setSubmitError(null);
+  }, [open]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Quote Request Submitted!",
-      description:
-        "We'll contact you within 24 hours to schedule your free consultation.",
-    });
-    onOpenChange(false);
-    setStep(1);
-    setFormData({
-      name: "",
-      phone: "",
-      email: "",
-      city: "",
-      timeline: "",
-      productInterest: "",
-      message: "",
-    });
+    if (submitting) return;
+    setSubmitting(true);
+    setSubmitError(null);
+    const apiBase = import.meta.env.VITE_API_URL ?? "";
+    const url = `${apiBase}/api/send-quote`;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 30000);
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+        signal: controller.signal,
+      });
+      clearTimeout(timer);
+      if (!res.ok) {
+        let msg = "Send failed";
+        try {
+          const j = await res.json();
+          if (j?.error) msg = j.error;
+        } catch {
+          // ignore
+        }
+        throw new Error(msg);
+      }
+      toast({
+        title: "Quote Request Submitted!",
+        description:
+          "We'll contact you within 24 hours to schedule your free consultation.",
+      });
+      onOpenChange(false);
+      setStep(1);
+      setFormData({
+        name: "",
+        phone: "",
+        email: "",
+        city: "",
+        timeline: "",
+        productInterest: "",
+        message: "",
+      });
+    } catch (err: unknown) {
+      clearTimeout(timer);
+      const message =
+        err instanceof Error && (err.name === "AbortError" || err.message?.includes("timed out"))
+          ? "Request timed out. Make sure the backend is running (port 3002) and try again."
+          : err instanceof Error
+            ? err.message
+            : "Sorry, we couldn't send your request. Please try again or call (310) 498-0110.";
+      setSubmitError(message);
+      toast({
+        title: "Couldn't send",
+        description: "Please try again or call (310) 498-0110.",
+        variant: "destructive",
+      });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const nextStep = () => setStep((s) => s + 1);
@@ -220,6 +268,9 @@ const QuoteWizard = ({ open, onOpenChange }: QuoteWizardProps) => {
                     className="mt-1 min-h-[120px]"
                   />
                 </div>
+                {submitError && (
+                  <p className="text-sm text-destructive">{submitError}</p>
+                )}
                 <div className="glass rounded-lg p-4 text-sm">
                   <p className="text-muted mb-2">What happens next?</p>
                   <ul className="space-y-2">
@@ -243,11 +294,13 @@ const QuoteWizard = ({ open, onOpenChange }: QuoteWizardProps) => {
                     onClick={prevStep}
                     variant="outline"
                     className="flex-1"
+                    disabled={submitting}
                   >
                     <ArrowLeft className="mr-2 h-4 w-4" /> Back
                   </Button>
-                  <Button type="submit" className="flex-1">
-                    Submit Request <Check className="ml-2 h-4 w-4" />
+                  <Button type="submit" className="flex-1" disabled={submitting}>
+                    {submitting ? "Sending…" : "Submit Request"}{" "}
+                    <Check className="ml-2 h-4 w-4" />
                   </Button>
                 </div>
               </motion.div>
