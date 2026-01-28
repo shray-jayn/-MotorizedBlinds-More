@@ -12,13 +12,15 @@ import { MapPin, Phone, Check, ArrowRight, Sun, Shield, Zap, Award, Clock } from
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { motion } from "framer-motion";
 import NotFound from "./NotFound";
+import QuoteWizard from "@/components/QuoteWizard";
 import productRollerImg from "@/assets/product-roller.jpg";
 import productHoneycombImg from "@/assets/product-honeycomb.jpg";
 import heroModernImg from "@/assets/hero-modern.jpg";
 
 const CityPage = () => {
   const { cityName } = useParams<{ cityName: string }>();
-  
+  const [quoteOpen, setQuoteOpen] = useState(false);
+
   if (!cityName) {
     return <NotFound />;
   }
@@ -118,7 +120,7 @@ const CityPage = () => {
               {cityInfo.climate}. Perfect for smart shading solutions.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg">
+              <Button size="lg" onClick={() => setQuoteOpen(true)}>
                 Get Free Quote
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
@@ -284,7 +286,7 @@ const CityPage = () => {
               Schedule your free consultation and discover the perfect motorized shading solution for your space.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg">
+              <Button size="lg" onClick={() => setQuoteOpen(true)}>
                 Get Your Free Quote
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
@@ -298,6 +300,8 @@ const CityPage = () => {
           </ScrollReveal>
         </div>
       </section>
+
+      <QuoteWizard open={quoteOpen} onOpenChange={setQuoteOpen} />
 
       {/* Schema.org JSON-LD */}
       <script type="application/ld+json">
